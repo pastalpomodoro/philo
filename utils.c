@@ -60,20 +60,19 @@ void *philo_exec(void *struc)
         i = 1;
     while (i--)
     {
-
         pthread_mutex_lock(&philo->alive_mutex);
-            if (philo->alive == 0)
-                break;
+        if (philo->alive == 0)
+        {
+            pthread_mutex_unlock(&philo->alive_mutex);
+            break;
+        }
         pthread_mutex_unlock(&philo->alive_mutex);
-        print_mutex(philo, "is thinking");
         eat(philo);
         print_mutex(philo, "is sleeping");
         usleep(philo->table->time_to_shit * 1000);
+        print_mutex(philo, "is thinking");
         i += philo->table->n_of_eat == -1;
     }
-    pthread_mutex_lock(&philo->alive_mutex);
-    philo->alive = 0;
-    pthread_mutex_unlock(&philo->alive_mutex);
     return (NULL);
 }
 

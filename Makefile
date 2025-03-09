@@ -1,8 +1,8 @@
 NAME=philo
 
 CC=cc
-FLAGS=-Wall -Wextra -Werror -g3 -fsanitize=thread
-# FLAGS=-Wall -Wextra -Werror -g3
+# FLAGS=-Wall -Wextra -Werror -g3 -fsanitize=thread
+FLAGS=-Wall -Wextra -Werror -g3
 
 SRC=main.c \
 	init_philo.c \

@@ -22,7 +22,7 @@ void *shugar_daddy_exec(void *strc)
     long lm;
 
     philos = (t_philo *)strc;
-    while (all_alive(philos))
+    while (1)
     {
         i = -1;
         while (i++, i < philos->table->n_philos)
@@ -30,11 +30,13 @@ void *shugar_daddy_exec(void *strc)
             pthread_mutex_lock(&philos[i].last_meal_mutex);
             lm = philos[i].last_meal;
             pthread_mutex_unlock(&philos[i].last_meal_mutex);
-            if ((get_time() - lm) > philos->table->time_to_die)
+            // printf("TIME: %ld\n", get_time() - lm);
+            if ((lm > 0 && (get_time() - lm) >= philos->table->time_to_die)
+                || (lm == 0 && (get_time() - philos[i].table->begin_time) >= philos->table->time_to_die))
             {
-                kill_philos(philos);
                 print_mutex(&philos[i], "dead");
-                break;
+                kill_philos(philos);
+                return(NULL);
             }
         }
     }
@@ -58,17 +60,16 @@ void   *create_philos(t_philo *philos, int n)
             return (free(philos), NULL);
     }
     i = -1;
-    pthread_join(shugar_daddy, NULL);
     while (i++, i < n)
         pthread_join(philos[i].philo, NULL);
+    pthread_join(shugar_daddy, NULL);
     i = -1;
     while (i++, i < n)
     {
         pthread_mutex_destroy(&philos[i].alive_mutex);
         pthread_mutex_destroy(&philos[i].last_meal_mutex);
     }
-    free(philos);
-    return (philos);
+    return (NULL);
 }
 
 int main(int ac, char **av)
@@ -84,5 +85,6 @@ int main(int ac, char **av)
     philos->table->begin_time = get_time();
     create_philos(philos, ft_atoi(av[1]));
     free_table(&table, ft_atoi(av[1]));
+    free(philos);
     return (0);
 }

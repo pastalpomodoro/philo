@@ -68,8 +68,8 @@ t_philo *init_philo_tab(t_table *table, int n)
     i = -1;
     while(i++, i < n)
     {
-        pthread_mutex_init(&philo->alive_mutex, NULL);
-        pthread_mutex_init(&philo->last_meal_mutex, NULL);
+        pthread_mutex_init(&philo[i].alive_mutex, NULL);
+        pthread_mutex_init(&philo[i].last_meal_mutex, NULL);
         philo[i].last_meal = 0;
         philo[i].alive = 1;
         philo[i].table = table;
