@@ -12,10 +12,10 @@ long get_time()
 int print_mutex(t_philo *philo, char *str)
 {
 
-    // pthread_mutex_lock(&philo->alive_mutex);
-    // if (philo->alive == 0)
-    //     return (pthread_mutex_unlock(&philo->alive_mutex), 0);
-    // pthread_mutex_unlock(&philo->alive_mutex);
+    pthread_mutex_lock(&philo->alive_mutex);
+    if (philo->alive == 0)
+        return (pthread_mutex_unlock(&philo->alive_mutex), 0);
+    pthread_mutex_unlock(&philo->alive_mutex);
     pthread_mutex_lock(&philo->table->print);
     printf("%ld %d %s\n", get_time() - philo->table->begin_time, philo->id + 1, str);
     pthread_mutex_unlock(&philo->table->print);
@@ -59,7 +59,7 @@ void *philo_exec(void *struc)
     i = philo->table->n_of_eat;
     if (i == -1)
         i = 1;
-    while (i--)
+    while (i-- > 0)
     {
         pthread_mutex_lock(&philo->alive_mutex);
         if (philo->alive == 0)
@@ -73,6 +73,7 @@ void *philo_exec(void *struc)
         usleep(philo->table->time_to_shit * 1000);
         print_mutex(philo, "is thinking");
         i += philo->table->n_of_eat == -1;
+        printf("I: %d   %d\n", i, philo->id);
     }
     return (NULL);
 }
