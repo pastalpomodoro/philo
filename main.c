@@ -22,7 +22,7 @@ void *shugar_daddy_exec(void *strc)
     long lm;
 
     philos = (t_philo *)strc;
-    while (1)
+    while (1 && all_alive(philos))
     {
         i = -1;
         while (i++, i < philos->table->n_philos)

@@ -59,7 +59,7 @@ void *philo_exec(void *struc)
     i = philo->table->n_of_eat;
     if (i == -1)
         i = 1;
-    while (i-- > 0)
+    while (i--)
     {
         pthread_mutex_lock(&philo->alive_mutex);
         if (philo->alive == 0)
@@ -73,8 +73,10 @@ void *philo_exec(void *struc)
         usleep(philo->table->time_to_shit * 1000);
         print_mutex(philo, "is thinking");
         i += philo->table->n_of_eat == -1;
-        printf("I: %d   %d\n", i, philo->id);
     }
+    pthread_mutex_lock(&philo->alive_mutex);
+    philo->alive = 0;
+    pthread_mutex_unlock(&philo->alive_mutex);
     return (NULL);
 }
 
