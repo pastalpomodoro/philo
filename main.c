@@ -30,11 +30,10 @@ void *shugar_daddy_exec(void *strc)
             pthread_mutex_lock(&philos[i].last_meal_mutex);
             lm = philos[i].last_meal;
             pthread_mutex_unlock(&philos[i].last_meal_mutex);
-            // printf("TIME: %ld\n", get_time() - lm);
             if ((lm > 0 && (get_time() - lm) >= philos->table->time_to_die)
                 || (lm == 0 && (get_time() - philos[i].table->begin_time) >= philos->table->time_to_die))
             {
-                print_mutex(&philos[i], "died");
+                print_mutex(&philos[i], "died", 3);
                 kill_philos(philos);
                 return(NULL);
             }
