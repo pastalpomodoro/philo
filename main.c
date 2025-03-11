@@ -34,7 +34,7 @@ void *shugar_daddy_exec(void *strc)
             if ((lm > 0 && (get_time() - lm) >= philos->table->time_to_die)
                 || (lm == 0 && (get_time() - philos[i].table->begin_time) >= philos->table->time_to_die))
             {
-                print_mutex(&philos[i], "dead");
+                print_mutex(&philos[i], "died");
                 kill_philos(philos);
                 return(NULL);
             }
@@ -79,7 +79,8 @@ int main(int ac, char **av)
 
     if (ac > 6 || ac < 5)
         return (printf("Missing argument!\n"), 0);
-    
+    if (parsing(av) == 0)
+        return (0);
     table = init_table(ft_atoi(av[1]), av);
     philos = init_philo_tab(&table, ft_atoi(av[1]));
     philos->table->begin_time = get_time();

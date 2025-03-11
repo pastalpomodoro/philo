@@ -33,6 +33,7 @@ typedef struct s_philo
 }               t_philo;
 
 int	ft_atoi(const char *str);
+int parsing(char **av);
 
 //          init_philo.c
 void    free_table(t_table *table, int n);

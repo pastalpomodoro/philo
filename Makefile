@@ -7,6 +7,7 @@ FLAGS=-Wall -Wextra -Werror -g3
 SRC=main.c \
 	init_philo.c \
 	utils.c \
+	parsing.c \
 
 OBJ_DIR=obj
 OBJ=$(SRC:%.c=$(OBJ_DIR)/%.o)

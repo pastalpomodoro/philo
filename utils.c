@@ -12,10 +12,10 @@ long get_time()
 int print_mutex(t_philo *philo, char *str)
 {
 
-    pthread_mutex_lock(&philo->alive_mutex);
-    if (philo->alive == 0)
-        return (pthread_mutex_unlock(&philo->alive_mutex), 0);
-    pthread_mutex_unlock(&philo->alive_mutex);
+    // pthread_mutex_lock(&philo->alive_mutex);
+    // if (philo->alive == 0)
+    //     return (pthread_mutex_unlock(&philo->alive_mutex), 0);
+    // pthread_mutex_unlock(&philo->alive_mutex);
     pthread_mutex_lock(&philo->table->print);
     printf("%ld %d %s\n", get_time() - philo->table->begin_time, philo->id + 1, str);
     pthread_mutex_unlock(&philo->table->print);
@@ -24,20 +24,21 @@ int print_mutex(t_philo *philo, char *str)
 
 int eat(t_philo *philo)
 {
-
+    if (philo->id % 2)
+        usleep(400);
     if (philo->fork_l < philo->fork_r)
     {
         pthread_mutex_lock(philo->fork_l);
-        print_mutex(philo, "has taken a fork");
+        print_mutex(philo, "has taken a fork ");
         pthread_mutex_lock(philo->fork_r);
-        print_mutex(philo, "has taken a fork");
+        print_mutex(philo, "has taken a fork ");
     }
     else
     {
         pthread_mutex_lock(philo->fork_r);
-        print_mutex(philo, "has taken a fork");
+        print_mutex(philo, "has taken a fork ");
         pthread_mutex_lock(philo->fork_l);
-        print_mutex(philo, "has taken a fork");
+        print_mutex(philo, "has taken a fork ");
     }
     print_mutex(philo, "is eating");
     pthread_mutex_lock(&philo->last_meal_mutex);
