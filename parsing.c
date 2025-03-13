@@ -27,7 +27,7 @@ int check_all_np(char **av)
 
 int parsing(char **av)
 {
-    if (ft_atoi(av[1]) > 200)
+    if (ft_atoi(av[1]) > 200 || ft_atoi(av[1]) < 1)
         return (0);
     else if (check_all_np(av) == 0)
         return (0);

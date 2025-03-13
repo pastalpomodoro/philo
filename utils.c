@@ -11,7 +11,6 @@ long get_time()
 
 int print_mutex(t_philo *philo, char *str, int n)
 {
-
     pthread_mutex_lock(&philo->alive_mutex);
     if (philo->alive == 0)
         return (pthread_mutex_unlock(&philo->alive_mutex), 0);
@@ -31,8 +30,8 @@ int print_mutex(t_philo *philo, char *str, int n)
         pthread_mutex_lock(&philo->table->print);
         printf(RED"%ld %d %s\n", get_time() - philo->table->begin_time, philo->id + 1, str);
     }
-    pthread_mutex_unlock(&philo->table->print);
     printf(RESET_COLOR);
+    pthread_mutex_unlock(&philo->table->print);
     return (1);
 }
 
@@ -40,10 +39,12 @@ int eat(t_philo *philo)
 {
     if (philo->id % 2)
         usleep(400);
-    if (philo->fork_l < philo->fork_r)
+    if (philo->fork_l < philo->fork_r || !philo->fork_r)
     {
         pthread_mutex_lock(philo->fork_l);
         print_mutex(philo, "has taken a fork ", 1);
+        if (!philo->fork_r)
+            return (pthread_mutex_unlock(philo->fork_l), 0);
         pthread_mutex_lock(philo->fork_r);
         print_mutex(philo, "has taken a fork ", 1);
     }
@@ -82,7 +83,8 @@ void *philo_exec(void *struc)
             break;
         }
         pthread_mutex_unlock(&philo->alive_mutex);
-        eat(philo);
+        if (eat(philo) == 0)
+            return (NULL);
         print_mutex(philo, "is sleeping", 2);
         usleep(philo->table->time_to_shit * 1000);
         print_mutex(philo, "is thinking", 2);

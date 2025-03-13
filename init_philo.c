@@ -75,7 +75,9 @@ t_philo *init_philo_tab(t_table *table, int n)
         philo[i].table = table;
         philo[i].id = i;
         philo[i].fork_l = &table->fork[i];
-        if ((i + 1) < n)
+        if (n == 1)
+            philo[i].fork_r = NULL;
+        else if ((i + 1) < n)
             philo[i].fork_r = &table->fork[i + 1];
         else
             philo[i].fork_r = &table->fork[0];
